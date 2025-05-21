@@ -1,15 +1,19 @@
-import axios from 'axios'
+import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://localhost:6543/api',
-})
+  baseURL: 'http://localhost:6543/api', // Pastikan backend berjalan di localhost:6543
+  withCredentials: true,  // Mengirimkan cookies jika perlu
+});
 
+// Menambahkan token jika ada di localStorage
 API.interceptors.request.use(config => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('token');
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+    config.headers.Authorization = `Bearer ${token}`;
   }
-  return config
-})
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
 
-export default API
+export default API;
