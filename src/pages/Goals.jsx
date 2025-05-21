@@ -7,7 +7,6 @@ export default function Goals() {
   const [targetDistance, setTargetDistance] = useState('')
   const [loading, setLoading] = useState(false)
 
-  // Load goals saat pertama kali mount
   useEffect(() => {
     fetchGoals()
   }, [])
@@ -16,7 +15,10 @@ export default function Goals() {
     setLoading(true)
     try {
       const res = await API.get('/goals')
-      setGoals(res.data)
+      let data = res.data || []
+      // sorting ascending berdasarkan bulan
+      data.sort((a, b) => a.month.localeCompare(b.month))
+      setGoals(data)
     } catch (error) {
       alert('Gagal ambil data target bulanan')
     } finally {
@@ -27,15 +29,21 @@ export default function Goals() {
   async function handleAddGoal(e) {
     e.preventDefault()
     if (!month || !targetDistance) return alert('Lengkapi bulan dan target jarak')
-
+  
     setLoading(true)
+    const newGoal = { id: 'temp-' + Date.now(), month, target_distance: parseFloat(targetDistance) }
+    setGoals(prev => [...prev, newGoal])  // optimis update langsung
+    setMonth('')
+    setTargetDistance('')
+  
     try {
-      await API.post('/create/goals', { month, target_distance: parseFloat(targetDistance) })
-      setMonth('')
-      setTargetDistance('')
+      const res = await API.post('/create/goals', { month, target_distance: newGoal.target_distance })
+      // update dengan data bener dari server (misal id asli)
       fetchGoals()
     } catch {
       alert('Gagal tambah target')
+      // rollback
+      setGoals(prev => prev.filter(g => g.id !== newGoal.id))
     } finally {
       setLoading(false)
     }
@@ -52,6 +60,14 @@ export default function Goals() {
     } finally {
       setLoading(false)
     }
+  }
+
+  // format bulan dari "2025-05" jadi "mei 2025"
+  function formatMonth(monthStr) {
+    if (!monthStr) return ''
+    const [year, month] = monthStr.split('-')
+    const monthNames = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agu', 'sep', 'okt', 'nov', 'des']
+    return `${monthNames[parseInt(month, 10) -1]} ${year}`
   }
 
   return (
@@ -84,7 +100,7 @@ export default function Goals() {
       <ul>
         {goals.map(goal => (
           <li key={goal.id} style={{ marginBottom: 8 }}>
-            <b>{goal.month}</b> — {goal.target_distance} km
+            <b>{formatMonth(goal.month)}</b> — {goal.target_distance} km
             <button
               onClick={() => handleDeleteGoal(goal.id)}
               disabled={loading}
