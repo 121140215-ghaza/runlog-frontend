@@ -35,7 +35,7 @@ function Navbar() {
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
     }}>
       <div>
-        {['Dashboard', 'Goals', 'stats'].map((route, i) => (
+        {['Dashboard', 'Goals', 'Stats'].map((route, i) => (
           <Link
             key={route}
             to={`/${route}`}

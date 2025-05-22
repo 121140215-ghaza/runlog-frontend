@@ -50,7 +50,7 @@ export default function Dashboard() {
       boxShadow: '0 4px 20px rgb(0 0 0 / 0.1)'
     }}>
       <h2 style={{ textAlign: 'center', color: '#5a4a8f', marginBottom: 24 }}>
-        dashboard runlog
+        DASHBOARD RUNLOG
       </h2>
 
       <form onSubmit={handleSubmit} style={{
@@ -112,12 +112,12 @@ export default function Dashboard() {
             if (!loading) e.currentTarget.style.backgroundColor = '#764ba2'
           }}
         >
-          {loading ? 'Loading...' : 'Tambah Log'}
+          {loading ? 'Loading...' : 'TAMBAH LOG'}
         </button>
       </form>
 
       <h3 style={{ color: '#5a4a8f', marginBottom: 12, borderBottom: '2px solid #764ba2', paddingBottom: 8 }}>
-       Daftar Log Lari
+       DAFTAR LOG LARI
       </h3>
       <ul style={{ listStyle: 'none', padding: 0 }}>
         {logs.length === 0 && <li style={{ fontStyle: 'italic', color: '#777' }}>tidak ada data</li>}
