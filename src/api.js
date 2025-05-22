@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://5551-180-241-18-26.ngrok-free.app/api', // Pastikan backend berjalan di localhost:6543
+  baseURL: 'https://ffc7-180-241-18-26.ngrok-free.app/api', // Pastikan backend berjalan di localhost:6543
   withCredentials: true,  // Mengirimkan cookies jika perlu
 });
 
