@@ -10,6 +10,7 @@ function PrivateRoute({ children }) {
   const token = localStorage.getItem('token')
   return token ? children : <Navigate to="/login" />
 }
+
 function Navbar() {
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
@@ -19,49 +20,84 @@ function Navbar() {
     navigate('/login')
   }
 
-  if (!token) {
-    // Kalau gak ada token, gak tampil Navbar sama sekali
-    return null
-  }
+  if (!token) return null
 
   return (
-    <nav style={{ padding: 10, background: '#eee', marginBottom: 20, display: 'flex', justifyContent: 'space-between' }}>
+    <nav style={{
+      padding: '12px 24px',
+      background: 'linear-gradient(90deg, #667eea, #764ba2)',
+      marginBottom: 30,
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      boxShadow: '0 4px 8px rgb(0 0 0 / 0.1)',
+      borderRadius: '0 0 10px 10px',
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+    }}>
       <div>
-        <Link to="/dashboard" style={{ marginRight: 10 }}>Dashboard</Link>
-        <Link to="/goals" style={{ marginRight: 10 }}>Target Bulanan</Link>
-        <Link to="/stats" style={{ marginRight: 10 }}>Statistik</Link>
-        <Link to="/testapi">Test API</Link>
+        {['Dashboard', 'Goals', 'stats'].map((route, i) => (
+          <Link
+            key={route}
+            to={`/${route}`}
+            style={{
+              marginRight: i !== 3 ? 20 : 0,
+              color: 'white',
+              fontWeight: '600',
+              textDecoration: 'none',
+              textTransform: 'capitalize',
+              transition: 'color 0.3s ease'
+            }}
+            onMouseEnter={e => e.currentTarget.style.color = '#ffd6e8'}
+            onMouseLeave={e => e.currentTarget.style.color = 'white'}
+          >
+            {route === 'goals' ? 'Target Bulanan' : route.charAt(0).toUpperCase() + route.slice(1)}
+          </Link>
+        ))}
       </div>
-
-      <button onClick={handleLogout} style={{ cursor: 'pointer' }}>
+      <button
+        onClick={handleLogout}
+        style={{
+          cursor: 'pointer',
+          backgroundColor: '#ff6f91',
+          border: 'none',
+          borderRadius: 8,
+          color: 'white',
+          padding: '8px 16px',
+          fontWeight: '600',
+          boxShadow: '0 2px 6px rgb(0 0 0 / 0.15)',
+          transition: 'background-color 0.3s ease'
+        }}
+        onMouseEnter={e => e.currentTarget.style.backgroundColor = '#ff3b7f'}
+        onMouseLeave={e => e.currentTarget.style.backgroundColor = '#ff6f91'}
+      >
         Logout
       </button>
     </nav>
   )
 }
 
-
 export default function App() {
   return (
     <BrowserRouter>
       <Navbar />
-
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={
-          <PrivateRoute><Dashboard /></PrivateRoute>
-        } />
-        <Route path="/goals" element={
-          <PrivateRoute><Goals /></PrivateRoute>
-        } />
-        <Route path="/stats" element={
-          <PrivateRoute><Stats /></PrivateRoute>
-        } />
-        <Route path="/testapi" element={
-          <PrivateRoute><TestAPI /></PrivateRoute>
-        } />
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
+      <div style={{ maxWidth: 960, margin: '0 auto', padding: '0 16px', fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }}>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={
+            <PrivateRoute><Dashboard /></PrivateRoute>
+          } />
+          <Route path="/goals" element={
+            <PrivateRoute><Goals /></PrivateRoute>
+          } />
+          <Route path="/stats" element={
+            <PrivateRoute><Stats /></PrivateRoute>
+          } />
+          <Route path="/testapi" element={
+            <PrivateRoute><TestAPI /></PrivateRoute>
+          } />
+          <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   )
 }

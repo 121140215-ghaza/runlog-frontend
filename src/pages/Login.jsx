@@ -26,13 +26,47 @@ export default function Login() {
     }
   }
   
-
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: 320, margin: 'auto', marginTop: 100 }}>
-      <h2>Login RUNLOG</h2>
+    <form 
+      onSubmit={handleSubmit} 
+      style={{
+        maxWidth: 360, 
+        margin: '100px auto', 
+        padding: 24,
+        borderRadius: 12,
+        boxShadow: '0 4px 15px rgb(0 0 0 / 0.1)',
+        backgroundColor: 'white',
+        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 16
+      }}
+    >
+      <h2 style={{textAlign: 'center', color: '#764ba2'}}>LOGIN RUNLOG</h2>
       <Input label="Email" type="email" value={email} onChange={e => setEmail(e.target.value)} required />
       <Input label="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} required />
-      <button type="submit" disabled={loading} style={{ padding: 10, width: '100%', cursor: 'pointer' }}>
+      <button 
+        type="submit" 
+        disabled={loading} 
+        style={{
+          padding: 12,
+          width: '100%',
+          cursor: loading ? 'not-allowed' : 'pointer',
+          borderRadius: 8,
+          border: 'none',
+          backgroundColor: '#764ba2',
+          color: 'white',
+          fontWeight: '600',
+          fontSize: 16,
+          transition: 'background-color 0.3s ease'
+        }}
+        onMouseEnter={e => {
+          if (!loading) e.currentTarget.style.backgroundColor = '#667eea'
+        }}
+        onMouseLeave={e => {
+          if (!loading) e.currentTarget.style.backgroundColor = '#764ba2'
+        }}
+      >
         {loading ? 'Loading...' : 'Login'}
       </button>
     </form>
